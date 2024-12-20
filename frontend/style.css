@@ -1,0 +1,76 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+}
+
+main {
+    padding: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+h1, h2 {
+    margin-bottom: 1rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+form input, form select, form button {
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+#transactions-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+#transactions-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    background: #fff;
+    border: 1px solid #ddd;
+    margin-bottom: 0.5rem;
+}
+
+#transactions-list .income {
+    color: green;
+}
+
+#transactions-list .expense {
+    color: red;
+}
+
+#summary {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: #fff;
+    border: 1px solid #ddd;
+}
