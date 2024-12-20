@@ -25,27 +25,47 @@ function updateSummary() {
 
 // Afficher une transaction dans la liste
 function addTransactionToDOM(transaction) {
-    const li = document.createElement('li');
-    li.classList.add(transaction.type === 'income' ? 'income' : 'expense');
-    li.textContent = `${transaction.description} : ${transaction.amount.toFixed(2)} €`;
+    const tr = document.createElement('tr');
+    
+    const dateCell = document.createElement('td');
+    dateCell.textContent = new Date(transaction.date).toLocaleDateString();
+    tr.appendChild(dateCell);
 
-    // Ajouter un bouton de suppression
+    const amountCell = document.createElement('td');
+    amountCell.textContent = `${transaction.amount.toFixed(2)} €`;
+    tr.appendChild(amountCell);
+
+    const typeCell = document.createElement('td');
+    typeCell.textContent = transaction.type === 'income' ? 'Revenu' : 'Dépense';
+    tr.appendChild(typeCell);
+
+    const descriptionCell = document.createElement('td');
+    descriptionCell.textContent = transaction.description;
+    tr.appendChild(descriptionCell);
+
+    // Ajouter un bouton de suppression dans la dernière cellule
+    const deleteCell = document.createElement('td');
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = "Supprimer";
     deleteBtn.addEventListener('click', () => deleteTransaction(transaction.id));
-    li.appendChild(deleteBtn);
+    deleteCell.appendChild(deleteBtn);
+    tr.appendChild(deleteCell);
 
-    transactionItems.appendChild(li);
+    transactionItems.appendChild(tr);
 }
 
 // Charger les transactions depuis l'API
 async function fetchTransactions() {
     const response = await fetch(apiUrl);
-    transactions = await response.json();
+    if (response.ok) {
+        transactions = await response.json();
 
-    transactionItems.innerHTML = ""; // Vider la liste
-    transactions.forEach(addTransactionToDOM);
-    updateSummary();
+        transactionItems.innerHTML = ""; // Vider la liste
+        transactions.forEach(addTransactionToDOM);
+        updateSummary();
+    } else {
+        alert("Erreur lors de la récupération des transactions.");
+    }
 }
 
 // Ajouter une transaction via l'API
@@ -95,6 +115,7 @@ transactionForm.addEventListener('submit', (e) => {
         amount,
         type,
         description,
+        date: new Date().toISOString()  // Ajout de la date de la transaction
     };
 
     createTransaction(newTransaction);

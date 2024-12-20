@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion des dépenses personnelles</title>
+    <title>Gestion des Dépenses Personnelles</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,7 +18,7 @@
                 <input type="number" id="amount" name="amount" placeholder="Montant" required>
 
                 <label for="type">Type :</label>
-                <select id="type" name="type" required>
+                <select id="transactionType" name="type" required>
                     <option value="income">Revenu</option>
                     <option value="expense">Dépense</option>
                 </select>
@@ -28,6 +28,13 @@
 
                 <button type="submit">Ajouter</button>
             </form>
+        </section>
+
+        <section id="summary">
+            <h2>Résumé</h2>
+            <p>Total des Revenus : <span id="totalIncome">0</span> €</p>
+            <p>Total des Dépenses : <span id="totalExpense">0</span> €</p>
+            <p>Solde : <span id="balance">0</span> €</p>
         </section>
 
         <section id="transactions-section">
@@ -41,8 +48,8 @@
                         <th>Description</th>
                     </tr>
                 </thead>
-                <tbody>
-                    
+                <tbody id="transactionItems">
+                    <!-- Transactions dynamiques ici -->
                 </tbody>
             </table>
         </section>

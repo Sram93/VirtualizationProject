@@ -1,35 +1,42 @@
-version: '3.8'
+version: '3.9'
 
 services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword   # Mot de passe root (à sécuriser)
+      MYSQL_DATABASE: expenses_db         # Nom de la base de données
+      MYSQL_USER: app_user                # Utilisateur de l'application
+      MYSQL_PASSWORD: app_password        # Mot de passe de l'utilisateur
+    volumes:
+      - db_data:/var/lib/mysql            # Volume pour persister les données
+    ports:
+      - "3306:3306"                       # Expose le port MySQL
+
   backend:
     build:
-      context: ./backend
+      context: ./backend                  # Répertoire contenant le backend Flask
       dockerfile: Dockerfile
-    volumes:
-      - ./backend:/app
-    ports:
-      - "5000:5000"
+    container_name: flask_backend
     depends_on:
-      - db
+      - mysql
+    environment:
+      DB_HOST: mysql                      # Le conteneur MySQL est accessible via ce nom
+      DB_NAME: expenses_db
+      DB_USER: app_user
+      DB_PASSWORD: app_password
+    ports:
+      - "5000:5000"                       # Expose le backend Flask
 
   frontend:
     build:
-      context: ./frontend
+      context: ./frontend                 # Répertoire contenant le frontend HTML/CSS/JS
       dockerfile: Dockerfile
+    container_name: html_frontend
     ports:
-      - "80:80"
-
-  db:
-    image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: examplepassword
-      MYSQL_DATABASE: bank_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-    volumes:
-      - db_data:/var/lib/mysql
-    ports:
-      - "3306:3306"
+      - "3000:80"                         # Expose le frontend
 
 volumes:
-  db_data:
+  db_data:                                # Volume pour persistance
